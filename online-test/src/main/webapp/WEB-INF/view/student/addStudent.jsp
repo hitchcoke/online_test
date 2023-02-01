@@ -5,24 +5,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<title>Insert title here</title>
 </head>
 <body>
-	<h1>사원추가</h1>
-	<form action="${pageContext.request.contextPath}/employee/addEmp" method="post" id="form">
+	<h1>학생추가</h1>
+	<form action="${pageContext.request.contextPath}/student/addStudent" method="post" id="form">
 		<table>
 			<tr>
 				<td>id</td>
-				<td><input type="text" name="empId" id="id"></td>
+				<td><input type="text" name="studentId" id="id"></td>
 			</tr>
 			<tr>
 				<td>pw</td>
-				<td><input type="password" name="empPw" id="pw"></td>
+				<td><input type="password" name="studentPw" id="pw"></td>
 			</tr>
 			<tr>
 				<td>name</td>
-				<td><input type="text" name="empName" id="name"></td>
+				<td><input type="text" name="studentName" id="name"></td>
 			</tr>
 		</table>
 		<button type="button" id="btn">추가</button>

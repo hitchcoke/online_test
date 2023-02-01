@@ -39,4 +39,15 @@ public class EmployeeService {
 		
 		return employeeMapper.loginEmp(employee);
 	}
+	public Integer updateEmpPw(int empNo, String oldPw, String newPw) {
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("oldPw", oldPw);
+		paramMap.put("newPw", newPw);
+		paramMap.put("empNo", empNo);
+		
+		return employeeMapper.updateEmpPw(paramMap);
+	}
+	
 }

@@ -9,20 +9,20 @@
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-	<h1>사원추가</h1>
-	<form action="${pageContext.request.contextPath}/employee/addEmp" method="post" id="form">
+	<h1>강사추가</h1>
+	<form action="${pageContext.request.contextPath}/teacher/addTeacher" method="post" id="form">
 		<table>
 			<tr>
 				<td>id</td>
-				<td><input type="text" name="empId" id="id"></td>
+				<td><input type="text" name="teacherId" id="id"></td>
 			</tr>
 			<tr>
 				<td>pw</td>
-				<td><input type="password" name="empPw" id="pw"></td>
+				<td><input type="password" name="teacherPw" id="pw"></td>
 			</tr>
 			<tr>
 				<td>name</td>
-				<td><input type="text" name="empName" id="name"></td>
+				<td><input type="text" name="teacherName" id="name"></td>
 			</tr>
 		</table>
 		<button type="button" id="btn">추가</button>

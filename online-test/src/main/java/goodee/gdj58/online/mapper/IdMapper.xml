@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodee.gdj58.online.mapper.IdMapper">
+<select id="selectIdCk"
+	resultType="java.lang.String"
+	parameterType="java.lang.String">
+	SELECT t2.id FROM 
+	(SELECT emp_id id FROM employee e 
+	UNION ALL
+	select student_id id from student t 
+	UNION ALL
+	select student_id id FROM student s) t2
+	WHERE t2.id=#{id}
+</select>
+
+</mapper>

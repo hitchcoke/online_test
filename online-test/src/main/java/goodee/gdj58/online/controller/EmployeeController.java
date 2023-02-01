@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.EmployeeService;
+import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.vo.Employee;
 
 @Controller 
@@ -19,6 +20,37 @@ public class EmployeeController {
 	
 	@Autowired
 	EmployeeService employeeService;
+	
+	@Autowired
+	IdService idService;
+	
+	@GetMapping("/employee/modifyEmpPw")
+	public String modifyEmpPw(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
+		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
+		if(loginEmp==null) {
+			return "redirect:/employee/loginEmp";
+		}
+		model.addAttribute("row", row);
+		return "employee/modifyEmpPw";
+		
+	}
+	
+	@PostMapping("/employee/modifyEmpPw")
+	public String modifyEmpPw(HttpSession session, @RequestParam(value="oldPw") String oldPw, @RequestParam(value="newPw") String newPw) {
+		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
+		if(loginEmp==null) {
+			return "redirect:/employee/loginEmp";
+		}
+		System.out.println(oldPw + newPw +loginEmp.getEmpNo());
+		int row=employeeService.updateEmpPw(loginEmp.getEmpNo(), oldPw, newPw);
+		System.out.println(row);
+		if(row==0) {
+			return "redirect:/employee/modifyEmpPw?row=1";
+		}
+		
+		return "redirect:/employee/empList";
+	}
+	
 	
 	@GetMapping("/employee/loginEmp")
 	public String loginEmp(HttpSession session) {
@@ -53,21 +85,28 @@ public class EmployeeController {
 	
 	
 	@GetMapping("/employee/addEmp")
-	public String addEmp(HttpSession session) {
+	public String addEmp(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
 		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
 		if(loginEmp==null) {
 			return "redirect:/employee/loginEmp";
 		}
-		
+		model.addAttribute("row", row);
 		return "employee/addEmp";
 	}
 	
 	@PostMapping("/employee/addEmp")
 	public String addEmp(Employee employee) {//employee를 선언 하고 필드명과 input 명을 동일 하게 해주면 setter가 실행돼 들어간다
+		String ckId= idService.getIdCheck(employee.getEmpId());
 		
-		employeeService.insertEmployee(employee);
-	
-		return "redirect:/employee/empList"; //sendRedirect , CM-> C
+		if(ckId==null) {
+			employeeService.insertEmployee(employee);
+			
+			return "redirect:/employee/empList";
+		}else {
+			return "redirect:/employee/addEmp?row=1";
+		}
+		
+		 //sendRedirect , CM-> C
 	}
 	
 	@GetMapping("/employee/empList")
