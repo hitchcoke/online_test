@@ -17,14 +17,24 @@ public class StudentService {
 	@Autowired 
 	private StudentMapper studentMapper;
 	
-	public List<Student> getStudentList(int currentPage, int rowPerPage){
+	public List<Student> getStudentList(int currentPage, int rowPerPage, String searchWord){
 		int beginRow= (currentPage-1)*rowPerPage;
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		return studentMapper.selectStudentList(paramMap);
+	}
+	public Integer countStu(String searchWord, int currentPage, int rowPerPage) {
+		int count= studentMapper.countStu(searchWord);
+		int lastPage=count/rowPerPage;
+		if(count%rowPerPage!=0) {
+			lastPage++;
+		}
+		
+		return lastPage;
 	}
 	
 	public Integer insertStudent(Student Student) {

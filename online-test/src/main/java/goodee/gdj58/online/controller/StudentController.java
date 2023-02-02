@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.service.StudentService;
-import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Student;
 
 @Controller
@@ -22,18 +21,16 @@ public class StudentController {
 	StudentService studentService;
 	@Autowired
 	IdService idService;
-	
-	
-	@GetMapping("/student/studentList")
+	@GetMapping("/employee/studentList")
 	public String StudentList(HttpSession session,
 			@RequestParam(value="currentPage", defaultValue= "1") int currentPage
-			,@RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage,
+			,@RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+			,@RequestParam(value="searchWord", defaultValue="") String searchWord,
 			Model model) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
-		List<Student> list=studentService.getStudentList(currentPage, rowPerPage);
+		int lastPage= studentService.countStu(searchWord, currentPage, rowPerPage);
+		List<Student> list=studentService.getStudentList(currentPage, rowPerPage, searchWord);
+		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("rowPerPage", rowPerPage);
@@ -41,39 +38,34 @@ public class StudentController {
 		return "student/studentList";
 	}
 	
-	@GetMapping("/student/deleteStudent")
+	@GetMapping("/employee/deleteStudent")
 	public String DeleteStudent( @RequestParam(value="studentNo") int studentNo, HttpSession session) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
+
 		int row=studentService.deleteStudent(studentNo);
 		System.out.print(row);
 		
-		return "redirect:/student/studentList";
+		return "redirect:/employee/studentList";
 	}
 	
-	@GetMapping("/student/addStudent")
+	@GetMapping("/employee/addStudent")
 	public String addStudent(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
+
 		model.addAttribute("row", row);
 		
 		return "student/addStudent";
 	}
 	
-	@PostMapping("/student/addStudent")
+	@PostMapping("/employee/addStudent")
 	public String addStudent(HttpSession session, Student t) {
 		String ckid = idService.getIdCheck(t.getStudentId());
 		if(ckid==null) {
 			studentService.insertStudent(t);
-			return "redirect:/student/studentList";
+			return "redirect:/employee/studentList";
 		}else {
-			return "redirect:/student/addStudent?row=1";
+			return "redirect:/employee/addStudent?row=1";
 		}
 		
 	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 }

@@ -17,4 +17,5 @@ public interface EmployeeMapper {
 	Integer addEmployee(Employee employee);
 	Integer deleteEmployee(int empNo);
 	Employee loginEmp(Employee emp);
+	Integer countEmp(String searchWord);
 }

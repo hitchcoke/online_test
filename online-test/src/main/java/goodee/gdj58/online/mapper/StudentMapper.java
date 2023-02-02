@@ -13,4 +13,5 @@ public interface StudentMapper {
 	Integer addStudent(Student s);
 	Integer deleteStudent(int studentNo);
 	Student loginStudent(Student s);
+	Integer countStu(String searchWord);
 }

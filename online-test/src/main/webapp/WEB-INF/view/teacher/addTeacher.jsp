@@ -10,7 +10,7 @@
 </head>
 <body>
 	<h1>강사추가</h1>
-	<form action="${pageContext.request.contextPath}/teacher/addTeacher" method="post" id="form">
+	<form action="${pageContext.request.contextPath}/employee/addTeacher" method="post" id="form">
 		<table>
 			<tr>
 				<td>id</td>

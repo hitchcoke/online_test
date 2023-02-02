@@ -10,9 +10,30 @@
 	<!-- parameter은 매개변수, result는 return값  -->
 		SELECT
 			emp_no empNo, emp_id empId, emp_name empName <!-- 이름을 alias 하여 vo타입과 같게 해준다  --> 
-		FROM employee ORDER BY empNo DESC LIMIT #{beginRow}, #{rowPerPage}	
+		FROM employee 
+		<where>
+			<if test="searchWord != '' ">
+				emp_name LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>
+		ORDER BY empNo DESC 
+		LIMIT #{beginRow}, #{rowPerPage}	
+		
 	</select>
 	<!-- 행 하나하나를 employee타입으로 변환 하여 list로 반환  -->
+	<select id="countEmp" resultType="int" parameterType="java.lang.String">
+		SELECT
+			COUNT(*)
+		FROM employee
+		<where>
+			<if test="searchWord != '' ">
+				emp_name LIKE CONCAT('%',#{searchWord},'%')
+			</if>
+		</where>	
+	
+	
+	</select>
+	
 	
 	<insert id="addEmployee" parameterType="goodee.gdj58.online.vo.Employee"><!--resultSet이 없는 경우 굳이 resulttype을int로 할필요없이 생략한다 -->
 		INSERT INTO employee(emp_id, emp_pw, emp_name)VALUES(#{empId}, PASSWORD(#{empPw}), #{empName});

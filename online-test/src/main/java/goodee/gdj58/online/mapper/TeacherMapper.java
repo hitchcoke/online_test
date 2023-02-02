@@ -13,4 +13,5 @@ public interface TeacherMapper {
 	Integer addTeacher(Teacher t);
 	Integer deleteTeacher(int teacherNo);
 	Teacher loginTeacher(Teacher t);
+	Integer countTea(String searchWord);
 }

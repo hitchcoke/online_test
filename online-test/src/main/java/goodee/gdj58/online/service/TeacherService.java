@@ -18,14 +18,24 @@ public class TeacherService {
 	@Autowired 
 	private TeacherMapper teacherMapper;
 	
-	public List<Teacher> getTeacherList(int currentPage, int rowPerPage){
+	public List<Teacher> getTeacherList(int currentPage, int rowPerPage, String searchWord){
 		int beginRow= (currentPage-1)*rowPerPage;
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
 		return teacherMapper.selectTeacherList(paramMap);
+	}
+	public Integer countTea(String searchWord, int currentPage, int rowPerPage) {
+		int count= teacherMapper.countTea(searchWord);
+		int lastPage=count/rowPerPage;
+		if(count%rowPerPage!=0) {
+			lastPage++;
+		}
+		
+		return lastPage;
 	}
 	
 	public Integer insertTeacher(Teacher teacher) {

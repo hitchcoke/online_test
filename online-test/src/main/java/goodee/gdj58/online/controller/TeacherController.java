@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.service.TeacherService;
-import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Teacher;
 
 @Controller
@@ -24,56 +23,52 @@ public class TeacherController {
 	IdService idService;
 	
 	
-	@GetMapping("/teacher/teacherList")
+	@GetMapping("/employee/teacherList")
 	public String teacherList(HttpSession session,
 			@RequestParam(value="currentPage", defaultValue= "1") int currentPage
-			,@RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage,
+			,@RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+			,@RequestParam(value="searchWord", defaultValue="") String searchWord,
 			Model model) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
-		List<Teacher> list=teacherService.getTeacherList(currentPage, rowPerPage);
+
+		List<Teacher> list=teacherService.getTeacherList(currentPage, rowPerPage, searchWord);
+		int lastPage= teacherService.countTea(searchWord, currentPage, rowPerPage);
 		model.addAttribute("list", list);
+		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("rowPerPage", rowPerPage);
 		
 		return "teacher/teacherList";
 	}
 	
-	@GetMapping("/teacher/deleteTeacher")
+	@GetMapping("/employee/deleteTeacher")
 	public String DeleteTeacher( @RequestParam(value="teacherNo") int teacherNo, HttpSession session) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
+
 		int row=teacherService.deleteTeacher(teacherNo);
 		System.out.print(row);
 		
-		return "redirect:/teacher/teacherList";
+		return "redirect:/employee/teacherList";
 	}
 	
-	@GetMapping("/teacher/addTeacher")
+	@GetMapping("/employee/addTeacher")
 	public String addTeacher(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
+
 		model.addAttribute("row", row);
 		
 		return "teacher/addTeacher";
 	}
 	
-	@PostMapping("/teacher/addTeacher")
+	@PostMapping("/employee/addTeacher")
 	public String addTeacher(HttpSession session, Teacher t) {
 		String ckid = idService.getIdCheck(t.getTeacherId());
 		if(ckid==null) {
 			teacherService.insertTeacher(t);
-			return "redirect:/teacher/teacherList";
+			return "redirect:/employee/teacherList";
 		}else {
-			return "redirect:/teacher/addTeacher?row=1";
+			return "redirect:/employee/addTeacher?row=1";
 		}
 		
 	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 }

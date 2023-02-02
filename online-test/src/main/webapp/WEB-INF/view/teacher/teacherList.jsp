@@ -14,7 +14,7 @@
 		</c:import>
 	</div>
 	<h1>teacher List</h1>
-	<a href="${pageContext.request.contextPath}/teacher/addTeacher">학생등록</a>
+	<a href="${pageContext.request.contextPath}/employee/addTeacher">강사등록</a>
 	<table border="1">
 		<tr>
 			<th>teacherId</th>
@@ -25,13 +25,36 @@
 			<tr>
 				<td>${e.teacherId}</td>
 				<td>${e.teacherName}</td>
-				<td><a href="${pageContext.request.contextPath}/teacher/deleteTeacher?teacherNo=${e.teacherNo}">삭제</a></td>
+				<td><a href="${pageContext.request.contextPath}/employee/deleteTeacher?teacherNo=${e.teacherNo}">삭제</a></td>
 			</tr>
 		</c:forEach>
 	</table>
-	<div>
-		<a href="${pageContext.request.contextPath}/teacher/teacherList?currentPage=${currentPage-1}">이전</a>
-		<a href="${pageContext.request.contextPath}/teacher/teacherList?currentPage=${currentPage+1}">다음</a>
+		<div>
+		<c:if test="${currentPage>1}">
+			<a href="${pageContext.request.contextPath}/employee/teacherList?currentPage=1&searchWord=${searchWord}">처음</a><span>&nbsp;</span>
+			<a href="${pageContext.request.contextPath}/employee/teacherList?currentPage=${currentPage-1}&searchWord=${searchWord}">이전</a><span>&nbsp;</span>
+		</c:if>
+		<c:forEach var="i" begin="${currentPage}" end="${lastPage}" step="1">
+			<c:if test="${i<currentPage+5}">
+				<c:if test="${i!=currentPage}">
+					<a href="${pageContext.request.contextPath}/employee/teacherList?currentPage=${i}&searchWord=${searchWord}">
+						${i}
+					</a>
+					<span>&nbsp;</span>
+				</c:if>
+				<c:if test="${i==currentPage}"><span style="background-color: green">&nbsp;${i}&nbsp;</span></c:if>
+			</c:if>
+		</c:forEach>
+		<c:if test="${currentPage<lastPage}">
+			<a href="${pageContext.request.contextPath}/employee/teacherList?currentPage=${currentPage+1}&searchWord=${searchWord}">다음</a><span>&nbsp;</span>
+			<a href="${pageContext.request.contextPath}/employee/teacherList?currentPage=${lastPage}&searchWord=${searchWord}">끝</a>
+		</c:if>
+		<form method="get" action="${pageContext.request.contextPath}/employee/teacherList">
+			<span>
+				<input type="text" name="searchWord">
+				<button type="submit">검색</button>
+			</span>
+		</form>
 	</div>
 </body>
 </html>

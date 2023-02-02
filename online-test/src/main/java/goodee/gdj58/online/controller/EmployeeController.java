@@ -26,10 +26,7 @@ public class EmployeeController {
 	
 	@GetMapping("/employee/modifyEmpPw")
 	public String modifyEmpPw(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
+		
 		model.addAttribute("row", row);
 		return "employee/modifyEmpPw";
 		
@@ -38,9 +35,7 @@ public class EmployeeController {
 	@PostMapping("/employee/modifyEmpPw")
 	public String modifyEmpPw(HttpSession session, @RequestParam(value="oldPw") String oldPw, @RequestParam(value="newPw") String newPw) {
 		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
+	
 		System.out.println(oldPw + newPw +loginEmp.getEmpNo());
 		int row=employeeService.updateEmpPw(loginEmp.getEmpNo(), oldPw, newPw);
 		System.out.println(row);
@@ -52,22 +47,19 @@ public class EmployeeController {
 	}
 	
 	
-	@GetMapping("/employee/loginEmp")
-	public String loginEmp(HttpSession session) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp!=null) {
-			return "redirect:/employee/empList";
-		}
+	@GetMapping("/loginEmp")
+	public String loginEmp(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
 		
+		model.addAttribute("row", row);
 		return "employee/loginEmp";
 	}
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/employee/loginEmp";
+		return "redirect:/loginEmp";
 	}
 	
-	@PostMapping("/employee/loginEmp")
+	@PostMapping("/loginEmp")
 	public String loginEmp(HttpSession session, Employee employee) {
 		Employee loginEmp= employeeService.loginEmp(employee);
 		
@@ -78,7 +70,7 @@ public class EmployeeController {
 			return "redirect:/employee/empList";
 		}
 		
-		return "redirect:/employee/loginEmp";
+		return "redirect:/loginEmp?row=1";
 		
 		
 	}
@@ -86,10 +78,7 @@ public class EmployeeController {
 	
 	@GetMapping("/employee/addEmp")
 	public String addEmp(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
+
 		model.addAttribute("row", row);
 		return "employee/addEmp";
 	}
@@ -112,28 +101,26 @@ public class EmployeeController {
 	@GetMapping("/employee/empList")
 	public String empList(Model model, HttpSession session,
 			@RequestParam(value="currentPage", defaultValue= "1") int currentPage
-			,@RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage) {
+			,@RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+			,@RequestParam(value="searchWord", defaultValue="") String searchWord) {
 		//request.getParameter를 대신함 알파로 (형변환도 해줌, 디폴트도 정할수 있음)
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
-		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage);
-		
+
+		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage, searchWord);
+		int lastPage= employeeService.countEmp(searchWord, currentPage, rowPerPage);
 		//request.setAttribute("list", list);
+		
+		model.addAttribute("searchWord", searchWord);
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("rowPerPage", rowPerPage);
+		model.addAttribute("lastPage", lastPage);
 		//model를 사용하여 view에서 볼 수 있게한다
 		
 		return "employee/empList";
 	}
 	@GetMapping("/employee/deleteEmp")
 	public String deleteEmp(@RequestParam(value="empNo") int empNo, HttpSession session) {
-		Employee loginEmp = (Employee)session.getAttribute("loginEmp");
-		if(loginEmp==null) {
-			return "redirect:/employee/loginEmp";
-		}
+
 		employeeService.deleteEmployee(empNo);
 		
 		return "redirect:/employee/empList";
