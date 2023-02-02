@@ -29,6 +29,11 @@ public class StudentController {
 			Model model) {
 		int lastPage= studentService.countStu(searchWord, currentPage, rowPerPage);
 		List<Student> list=studentService.getStudentList(currentPage, rowPerPage, searchWord);
+		int row=1;
+		if(currentPage>3) {
+			row=currentPage-2;
+		}
+		model.addAttribute("row", row);
 		model.addAttribute("searchWord", searchWord);
 		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("list", list);

@@ -34,8 +34,9 @@
 			<a href="${pageContext.request.contextPath}/employee/studentList?currentPage=1&searchWord=${searchWord}">처음</a><span>&nbsp;</span>
 			<a href="${pageContext.request.contextPath}/employee/studentList?currentPage=${currentPage-1}&searchWord=${searchWord}">이전</a><span>&nbsp;</span>
 		</c:if>
-		<c:forEach var="i" begin="${currentPage}" end="${lastPage}" step="1">
-			<c:if test="${i<currentPage+5}">
+		
+		<c:forEach var="i" begin="${row}" end="${lastPage}" step="1">
+			<c:if test="${i<currentPage+3}">
 				<c:if test="${i!=currentPage}">
 					<a href="${pageContext.request.contextPath}/employee/studentList?currentPage=${i}&searchWord=${searchWord}">
 						${i}

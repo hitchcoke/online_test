@@ -32,6 +32,11 @@ public class TeacherController {
 
 		List<Teacher> list=teacherService.getTeacherList(currentPage, rowPerPage, searchWord);
 		int lastPage= teacherService.countTea(searchWord, currentPage, rowPerPage);
+		int row=1;
+		if(currentPage>3) {
+			row=currentPage-2;
+		}
+		model.addAttribute("row", row);
 		model.addAttribute("list", list);
 		model.addAttribute("searchWord", searchWord);
 		model.addAttribute("lastPage", lastPage);

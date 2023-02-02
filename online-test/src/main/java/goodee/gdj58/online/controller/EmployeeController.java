@@ -108,7 +108,11 @@ public class EmployeeController {
 		List<Employee> list = employeeService.getEmployeeList(currentPage, rowPerPage, searchWord);
 		int lastPage= employeeService.countEmp(searchWord, currentPage, rowPerPage);
 		//request.setAttribute("list", list);
-		
+		int row=1;
+		if(currentPage>3) {
+			row=currentPage-2;
+		}
+		model.addAttribute("row", row);
 		model.addAttribute("searchWord", searchWord);
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
