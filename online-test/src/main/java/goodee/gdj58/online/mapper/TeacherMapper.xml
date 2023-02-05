@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.TeacherMapper">
+
 	<select id="selectTeacherList" resultType="goodee.gdj58.online.vo.Teacher" parameterType="map">
 		SELECT teacher_no teacherNo, teacher_id teacherId, teacher_name teacherName 
 		FROM teacher
@@ -11,16 +12,16 @@
 		</where> 
 		ORDER BY teacherNo DESC LIMIT #{beginRow}, #{rowPerPage}
 	</select>
+	
 	<insert id="addTeacher" parameterType="goodee.gdj58.online.vo.Teacher" >
-		INSERT INTO teacher(teacher_id, teacher_name, teacher_pw)VALUES(#{teacherId}, #{teacherName}, PASSWORD(#{teacherPw}))
+		INSERT INTO teacher(teacher_id, teacher_name, teacher_pw, grade)VALUES(#{teacherId}, #{teacherName}, PASSWORD(#{teacherPw}), #{grade})
 	</insert>
+	
 	<delete id="deleteTeacher" parameterType="int">
 		DELETE FROM teacher WHERE teacher_no=#{teacherNo};
 	</delete>
 	
-	<select id="loginTeacher" parameterType="goodee.gdj58.online.vo.Teacher" resultType= "goodee.gdj58.online.vo.Teacher">
-		SELECT teacher_id teacherId, teacher_name teacherName, teacher_no teacherNo WHERE teacher_id=#{teacherId} AND teacher_pw=PASSWORD(#{teacherPw})
-	</select>
+	
 	<select id="countTea" resultType="int" parameterType="java.lang.String">
 		SELECT
 			COUNT(*)
@@ -32,4 +33,101 @@
 		</where>	
 	</select>
 	
+	<select id="selectTestbyTeacher" resultType="goodee.gdj58.online.vo.Test" parameterType="int">
+		SELECT test_id testId, test_title testTitle, test_date testDate, active
+		FROM test
+		WHERE grade=#{grade} AND vision=1;
+	</select>
+	
+	<select id="selectTestQuestion" resultType="goodee.gdj58.online.vo.Question" parameterType="int">
+		SELECT question_no questionNo, test_id testId, question_idx questionIdx, question_title questionTitle FROM question WHERE test_id=#{testId} AND vision=1
+	</select>
+	
+	<select id="selectTestExample" resultType="goodee.gdj58.online.vo.Example" parameterType="int">
+		SELECT question_no questionNo, example_no exampleNo, example_idx exampleIdx, example_ox exampleOx, example_title exampleTitle FROM example WHERE question_no=#{questionNo}
+	</select>
+	
+	<insert id="addQuestion" parameterType="goodee.gdj58.online.vo.Question">
+		INSERT INTO question(test_id, question_idx, question_title)VALUES(#{testId}, #{questionIdx}, #{questionTitle})
+	</insert>
+	
+	<insert id="addTest" parameterType="goodee.gdj58.online.vo.Test">
+		INSERT INTO test(test_title, test_date, grade)VALUES(#{testTitle}, #{testDate}, #{grade})
+	</insert>
+	
+	<insert id="addExample" parameterType="goodee.gdj58.online.vo.Example">
+		INSERT INTO example(question_no, example_idx, example_ox, example_title)VALUES(#{questionNo}, #{exampleIdx}, #{exampleOx}, #{exampleTitle})
+	</insert>
+	
+	<select id="loginTeacher" parameterType="goodee.gdj58.online.vo.Teacher" resultType="goodee.gdj58.online.vo.Teacher">
+		SELECT teacher_no teacherNo, teacher_id teacherId, teacher_pw teacherPw, teacher_name teacherName, grade FROM teacher WHERE teacher_id=#{teacherId} AND teacher_pw= PASSWORD(#{teacherPw})
+	</select> 
+	
+	<select id="testOne" parameterType="int" resultType="goodee.gdj58.online.vo.Test">
+		SELECT test_id testId, test_title testTitle, test_date testDate, grade, active FROM test WHERE test_id=#{testId}
+	</select>
+	
+	<select id="questionOne" parameterType="int" resultType="goodee.gdj58.online.vo.Question">
+		SELECT question_no questionNo, test_id testId, question_idx questionIdx, question_title questionTitle FROM question WHERE question_no=#{questionNo}
+	</select>	
+	
+	<select id="exampleOne" parameterType="int" resultType="goodee.gdj58.online.vo.Example">
+		SELECT example_no exampleNo, question_no questionNo, example_idx exampleIdx, example_ox exampleOx, example_title exampleTitle FROM example WHERE example_no=#{exampleNo}
+	</select>
+	
+	<delete id="deleteTest" parameterType="int" >
+		DELETE FROM test WHERE test_id=#{testId};
+	</delete>
+	
+	<delete id="deleteQuestion" parameterType="int" >
+		DELETE FROM question WHERE question_no=#{questionNo}
+	</delete>
+	
+	<delete id="deleteExample" parameterType="int">
+		DELETE FROM example WHERE example_no=#{exampleNO}
+	</delete> 
+	
+	<update id="updateTestvi" parameterType="int">
+		UPDATE test SET vision=0 WHERE test_id=#{x}
+	</update>
+	
+	<update id="updateQuestionVi" parameterType="int">
+		UPDATE question SET vision=0 WHERE question_no=#{x}
+	</update>
+	
+	<update id="updateTest" parameterType="goodee.gdj58.online.vo.Test">
+	
+		UPDATE test SET test_title=#{testTitle}, test_date=#{testDate} WHERE test_id=#{testId}
+	
+	</update>
+	
+	<update id="updateQuestion" parameterType="goodee.gdj58.online.vo.Question">
+		
+		UPDATE question SET question_idx=#{questionIdx}, question_title=#{questionTitle} WHERE question_no=#{questionNo}
+	
+	</update>
+	
+	<update id="updateExample" parameterType="goodee.gdj58.online.vo.Example">
+		
+		UPDATE example SET example_idx=#{exampleIdx}, example_ox=#{exampleOx}, example_title=#{exampleTitle} WHRER example_no=#{exampleNo}
+	
+	</update>
+	
+	<select id="countQuestionByTest" parameterType="int" resultType="int">
+	
+		SELECT count(*) FROM question WHERE test_id=#{testId}
+		
+	</select>
+	
+	<update id="activeTest" parameterType="int">
+		
+	 	UPDATE test SET active=1 WHERE test_id=#{x} 
+		
+	</update>
+	
+	<update id="deactiveTest" parameterType="int">
+	
+		UPDATE test SET active=0 WHERE test_id=#{x}
+	
+	</update>
 </mapper>

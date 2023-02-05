@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.service.TeacherService;
+import goodee.gdj58.online.vo.Example;
+import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Teacher;
+import goodee.gdj58.online.vo.Test;
 
 @Controller
 public class TeacherController {
@@ -74,6 +77,144 @@ public class TeacherController {
 		}
 		
 	}
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// emp 영역
+	
+	
+	@PostMapping("/loginTea")
+	public String logingTea(HttpSession session, 
+			@RequestParam(value="Id") String id,
+			 @RequestParam(value="Pw") String pw) {
+		Teacher tea = new Teacher();
+		tea.setTeacherId(id);
+		tea.setTeacherPw(pw);
+		
+		Teacher loginTea = teacherService.loginTeacher(tea);
+		if(loginTea!=null) {
+			
+			session.setAttribute("loginTea", loginTea);
+			return "redirect:/teacher/testList";
+		}
+		
+		
+		return "redirect:/login?row=1";
+	}
+	
+	@GetMapping("/teacher/testList")
+	public String testList(HttpSession session
+			, Model model) {
+		Teacher loginTea= (Teacher)session.getAttribute("loginTea");
+		List<Test> list= teacherService.selectTestList(loginTea.getGrade());
+		model.addAttribute("list", list);
+		return "teacher/testList";
+	}
+	
+	@GetMapping("/teacher/questionList")
+	public String questionList(Model model, @RequestParam(value="testId") int testId) {
+		List<Question> list= teacherService.selectTestQuestion(testId);
+		model.addAttribute("list", list);
+		Test t= teacherService.testOne(testId);
+		int count= teacherService.countQuestion(testId);
+		int score = 100/count;
+		model.addAttribute("score", score);
+		model.addAttribute("t", t);
+		
+		
+		return "teacher/questionList";
+	}
+	
+	@GetMapping("/teacher/exampleList")
+	public String exampleList(Model model, @RequestParam(value="questionNo") int questionNo) {
+		
+		List<Example> list= teacherService.selectTestExample(questionNo);
+		model.addAttribute("list", list);
+		Question q = teacherService.questionOne(questionNo);
+		model.addAttribute("q", q);
+		
+		
+		return "teacher/exampleList";
+	}
+	@GetMapping("/teacher/deleteTest")
+	public String deleteTest(@RequestParam(value="testId") int testId) {
+		int row=teacherService.deleteTest(testId);
+		
+		return "redirect:/teacher/testList?row="+row;
+	}
+	
+	@GetMapping("/teacher/deleteQuestion")
+	public String deleteQuestion(@RequestParam(value="questionNo") int questionNo
+								,@RequestParam(value="testId") int testId) {
+		teacherService.deleteQuestion(questionNo, testId);
+		
+		return "redirect:/teacher/questionList?testId="+testId;
+	}
+	
+	@GetMapping("/teacher/deleteExample")
+	public String deleteExample(@RequestParam(value="questionNo") int questionNo
+								,@RequestParam(value="exampleNo") int exampleNo) {
+		teacherService.deleteExample(exampleNo);
+		
+		return "redirect:/teacher/exampleList?questionNo="+questionNo;
+	}
+	
+	@GetMapping("/teacher/addTest")
+	public String addTest(HttpSession session,Model model) {
+		Teacher loginTea = (Teacher)session.getAttribute("loginTea");
+		model.addAttribute("loginTea", loginTea);
+		
+		
+		return "teacher/addTest";
+	}
+	@PostMapping("/teacher/addTest")
+	public String addTest(HttpSession session,
+			@RequestParam(value="testTitle") String testTitle,
+			@RequestParam(value="testDate") String testDate) {
+		Teacher loginTea = (Teacher)session.getAttribute("loginTea");
+		teacherService.addTest(testTitle, testDate, loginTea.getGrade());
+		return "redirect:/teacher/testList";
+	}
+	
+	@GetMapping("/teacher/addQuestion")
+	public String addQuestion(@RequestParam(value="testId") int testId, Model model) {
+		model.addAttribute("testId", testId);
+		
+		return "teacher/addQuestion";
+	}
+	
+	@PostMapping("/teacher/addQuestion")
+	public String addQuestion(@RequestParam(value="testId") int testId,
+			@RequestParam(value="questionIdx") int questionIdx,
+			@RequestParam(value="questionTitle") String questionTitle) {
+			teacherService.addQuestion(questionTitle, questionIdx, testId);
+		return "redirect:/teacher/questionList?testId="+testId;
+	}
+	
+	@PostMapping("/teacher/addExample")
+	public String addExample(@RequestParam(value="questionNo") int questionNo,
+			Example e) {
+
+			teacherService.addExample(e);
+		
+		return "redirect:/teacher/exampleList?questionNo="+questionNo;
+	}
+	
+	@PostMapping("/teacher/updateTest")
+	public String updateTest(Test t) {
+		teacherService.updateTest(t);
+		
+		return "redirect:/teacher/questionList?testId="+t.getTestId();
+	}
+	@PostMapping("/teacher/updateQuestion")
+	public String updateQuestion(Question q) {
+		teacherService.updateQuestion(q);
+		
+		return "redirect:/teacher/exampleList?questionNo="+q.getQuestionNo();
+	}
+	@PostMapping("/teacher/updateExample")
+	public String updateExample(Example e) {
+		teacherService.updateExample(e);
+
+		return "redirect:/teacher/exampleList?questionNo="+e.getQuestionNo();
+	}
 }

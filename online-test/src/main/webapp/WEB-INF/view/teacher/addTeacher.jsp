@@ -24,6 +24,15 @@
 				<td>name</td>
 				<td><input type="text" name="teacherName" id="name"></td>
 			</tr>
+			<tr>
+				<td>grade</td>
+				<td><select name="grade">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					
+				</select></td>
+			</tr>
 		</table>
 		<button type="button" id="btn">추가</button>
 	</form>

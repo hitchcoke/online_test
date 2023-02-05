@@ -47,7 +47,7 @@ public class EmployeeController {
 	}
 	
 	
-	@GetMapping("/loginEmp")
+	@GetMapping("/login")
 	public String loginEmp(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
 		
 		model.addAttribute("row", row);
@@ -56,12 +56,17 @@ public class EmployeeController {
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/loginEmp";
+		return "redirect:/login";
 	}
 	
 	@PostMapping("/loginEmp")
-	public String loginEmp(HttpSession session, Employee employee) {
-		Employee loginEmp= employeeService.loginEmp(employee);
+	public String loginEmp(HttpSession session, 
+			 @RequestParam(value="Id") String id,
+			 @RequestParam(value="Pw") String pw) {
+		Employee e= new Employee();
+		e.setEmpId(id);
+		e.setEmpPw(pw);
+		Employee loginEmp= employeeService.loginEmp(e);
 		
 		if(loginEmp!=null) {
 			
@@ -70,7 +75,7 @@ public class EmployeeController {
 			return "redirect:/employee/empList";
 		}
 		
-		return "redirect:/loginEmp?row=1";
+		return "redirect:/login?row=1";
 		
 		
 	}

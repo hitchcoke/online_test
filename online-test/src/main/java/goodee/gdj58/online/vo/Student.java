@@ -8,4 +8,5 @@ public class Student {
 	private String studentId;
 	private String studentPw;
 	private String studentName;
+	private int grade;
 }

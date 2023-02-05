@@ -15,24 +15,47 @@
 	</c:if>
 	<c:if test="${loginEmp==null}">
 	<h2>login</h2>
-	<form action="${pageContext.request.contextPath}/loginEmp" method="post">
+	<form action="${pageContext.request.contextPath}/loginEmp" method="post" id="form">
 	<table>
 		<tr>
 			<td>id</td>
-			<td><input type="text" name="empId"></td>
+			<td><input type="text" name="Id"></td>
 		</tr>
 		<tr>
 			<td>pw</td>
-			<td><input type="password" name="empPw"></td>
+			<td><input type="password" name="Pw"></td>
+		</tr>
+		<tr>
+			<td>로그인 방식</td>
+			<td>
+				<select id="login" name="login">
+					<option value="emp">사원</option>
+					<option value="tea">강사</option>
+					<option value="stu">학생</option>
+				</select>	
+			</td>
 		</tr>
 	</table>
-	<button type="submit">로그인</button>
+	<button type="button" id="btn">로그인</button>
 	</form>
 	</c:if>
 <script>
 if(${row}==1){
 	alert('아이디, 비밀번호확인해주세요')
 }
+	
+$('#btn').click(function(){
+	console.log($('#login').val());
+	if($('#login').val() == 'tea'){
+		$("#form").attr("action", "loginTea");
+	}else if($('#login').val() == 'stu'){
+		$("#form").attr("action", "loginStu");
+	}
+	
+	$('#form').submit();
+	
+	
+})
 </script>	
 </body>
 </html>
