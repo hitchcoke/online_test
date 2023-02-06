@@ -80,6 +80,26 @@ public class TeacherController {
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// emp 영역
+	@GetMapping("/teacher/updateTea")
+	public String updateTea(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
+		model.addAttribute("row", row);
+		return  "teacher/updateTea";
+	}
+	
+	@PostMapping("/teacher/updateTea")
+	public String updateTea(HttpSession session, @RequestParam(value="oldPw") String oldPw, @RequestParam(value="newPw") String newPw) {
+		Teacher tea = (Teacher)session.getAttribute("loginTea");
+		int row=teacherService.updateTea(newPw, oldPw, tea.getTeacherId());
+		if(row==0) {
+			return "redirect:/teacher/updateTea?row=1";
+		}
+		
+		return "redirect:/teacher/testList";
+		
+		
+	}
+	
+	
 	
 	
 	@PostMapping("/loginTea")
@@ -116,7 +136,16 @@ public class TeacherController {
 		model.addAttribute("list", list);
 		Test t= teacherService.testOne(testId);
 		int count= teacherService.countQuestion(testId);
-		int score = 100/count;
+
+		int score = 0;
+		if(count!=0) {
+			score=100/count;
+		}
+		int idx= 1;
+		for(Question q : list) {
+			idx++;
+		}
+		model.addAttribute("idx", idx);
 		model.addAttribute("score", score);
 		model.addAttribute("t", t);
 		
@@ -131,6 +160,11 @@ public class TeacherController {
 		model.addAttribute("list", list);
 		Question q = teacherService.questionOne(questionNo);
 		model.addAttribute("q", q);
+		int idx= 1;
+		for(Example e : list) {
+			idx++;
+		}
+		model.addAttribute("idx", idx);
 		
 		
 		return "teacher/exampleList";

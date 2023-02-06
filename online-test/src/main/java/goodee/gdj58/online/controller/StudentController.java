@@ -1,5 +1,6 @@
 package goodee.gdj58.online.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,12 +14,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.service.StudentService;
+import goodee.gdj58.online.service.TeacherService;
+import goodee.gdj58.online.vo.Example;
+import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Student;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 public class StudentController {
 	@Autowired
 	StudentService studentService;
+	
+	@Autowired
+	TeacherService teacherService;
 	@Autowired
 	IdService idService;
 	@GetMapping("/employee/studentList")
@@ -72,5 +80,28 @@ public class StudentController {
 		
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@GetMapping("/paper")
+	public String paper(HttpSession session, @RequestParam(value="testId" ) int testId, Model model) {
+		List<Question> qList= teacherService.selectTestQuestion(testId);
+		
+		model.addAttribute("qList", qList);
+		for(Question q : qList) {
+			List<Example> eList = teacherService.selectTestExample(q.getQuestionNo());
+			model.addAttribute(q.getQuestionNo()+q.getQuestionTitle(), eList);		
+
+			
+			log.debug("\u001B[31m"+'1'+q.getQuestionNo()+'2'+q.getQuestionTitle()+'3');
+			
+		}
+	
+		
+		
+		
+		
+		
+		return "student/paper";
+	}
+	
 	
 }

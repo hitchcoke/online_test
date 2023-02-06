@@ -22,6 +22,13 @@
 	</delete>
 	
 	
+	<update id="updateTea" parameterType="map">
+		
+		UPDATE teacher SET teacher_pw=PASSWORD(#{newPw}) WHERE teacher_id=#{teacherId} AND teacher_pw=PASSWORD(#{teacherPw})
+	
+	
+	</update>
+	
 	<select id="countTea" resultType="int" parameterType="java.lang.String">
 		SELECT
 			COUNT(*)
@@ -109,7 +116,7 @@
 	
 	<update id="updateExample" parameterType="goodee.gdj58.online.vo.Example">
 		
-		UPDATE example SET example_idx=#{exampleIdx}, example_ox=#{exampleOx}, example_title=#{exampleTitle} WHRER example_no=#{exampleNo}
+		UPDATE example SET example_idx=#{exampleIdx}, example_ox=#{exampleOx}, example_title=#{exampleTitle} WHERE example_no=#{exampleNo}
 	
 	</update>
 	

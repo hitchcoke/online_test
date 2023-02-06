@@ -22,6 +22,8 @@ public interface TeacherMapper {
 	Teacher loginTeacher(Teacher t);
 	//강사 리스트 페이징 필요카운트
 	Integer countTea(String searchWord);
+	//강사 비밀번호 변경
+	Integer updateTea(Map<String, Object> paramMap);
 	//시험리스트
 	List<Test> selectTestbyTeacher(int grade);
 	//문제리스트

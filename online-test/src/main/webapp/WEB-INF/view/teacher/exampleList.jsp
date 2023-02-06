@@ -27,13 +27,13 @@
 				<td>${e.exampleIdx}</td>
 				<td>${e.exampleTitle }</td>
 				<td>${e.exampleOx}</td>
-				<td><a href="${pageContext.request.contextPath}/teacher/updateExample?">수정</a></td>
+				<td><a href="" data-bs-toggle="modal" data-bs-target="#exampleModal${e.exampleIdx}">수정</a></td>
 				<td><a href="${pageContext.request.contextPath}/teacher/deleteExample?exampleNo=${e.exampleNo}&questionNo=${e.questionNo}">삭제</a></td>
 			</tr>
 		</c:forEach>
 		<form action="${pageContext.request.contextPath}/teacher/addExample" method="post">
 			<tr>
-				<td><input type="number" name="exampleIdx"><input type="hidden" name="questionNo" value="${q.questionNo}"></td>
+				<td><input type="number" name="exampleIdx" value="${idx}" readonly="readonly"><input type="hidden" name="questionNo" value="${q.questionNo}"></td>
 				<td><input type="text" name="exampleTitle"></td>
 				<td colspan="3"><select name="exampleOx">
 					<option value="오답">오답
@@ -47,7 +47,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">test update</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">question update</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="${pageContext.request.contextPath}/teacher/updateQuestion" method="post">
@@ -63,6 +63,38 @@
       </form>
     </div>
   </div>
-</div>	
+</div>
+<c:forEach var="e" items="${list}">
+
+<div class="modal fade" id="exampleModal${e.exampleIdx}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">example update</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="${pageContext.request.contextPath}/teacher/updateExample" method="post">
+	      <div class="modal-body">
+	      	<div>exampleIdx: <input type="number" name="exampleIdx" value="${e.exampleIdx}" readonly="readonly"></div>
+	       	 <div>exampleTitle: <input type="text" name="exampleTitle"> </div>
+	       	 <div>exampleOx:
+	       	 	<select name="exampleOx">
+					<option value="오답">오답
+					<option value="정답">정답
+				</select>
+	       	 </div>
+	       	 <input type="hidden" name="questionNo" value="${q.questionNo}">
+	       	 <input type="hidden" name="exampleNo" value="${e.exampleNo}">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="submit" class="btn btn-primary">update</button>
+	      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+</c:forEach>	
 </body>
 </html>

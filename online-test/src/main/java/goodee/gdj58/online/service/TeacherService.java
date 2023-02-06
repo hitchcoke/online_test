@@ -54,19 +54,27 @@ public class TeacherService {
 		return teacherMapper.deleteTeacher(empNo);
 	}
 
-	public Integer addQuestion(String questionTitle, int questionIdx, int testId) {
+	public Integer addQuestion(String questionTitle, int questionIdx, int testId){
 		Question q=  new Question();
 		q.setQuestionIdx(questionIdx);
 		q.setTestId(testId);
 		q.setQuestionTitle(questionTitle);
-		teacherMapper.addQuestion(q);
 		
-		if(100%teacherMapper.countQuestionByTest(testId)==0) {
+		try {
+
+			teacherMapper.addQuestion(q);
+		
+
+		}catch(Exception e) {
+			q.setQuestionIdx(questionIdx+1);
+			teacherMapper.addQuestion(q);
+		}
+		
+		if(100%teacherMapper.countQuestionByTest(testId)==0&&teacherMapper.countQuestionByTest(testId)>4) {
 			teacherMapper.activeTest(testId);
 		}else {
 			teacherMapper.deactiveTest(testId);
 		}
-		
 		return 0;
 	}
 	public Integer addTest(String testTitle, String testDate, int grade) {
@@ -115,13 +123,14 @@ public class TeacherService {
 	}
 	
 	public int deleteTest(int testId) {
-		int row=teacherMapper.deleteTest(testId);
+		try {
+		teacherMapper.deleteTest(testId);
+		}catch(Exception e) {
 		
-		if(row!=1) {
-			row=teacherMapper.updateTestvi(testId);
+			teacherMapper.updateTestvi(testId);
 		}
 		
-		return row;
+		return 0;
 		
 	}
 	
@@ -130,10 +139,12 @@ public class TeacherService {
 		if(row!=1) {
 			row=teacherMapper.updateQuestionVi(questionNo);
 		}
-		if(100%teacherMapper.countQuestionByTest(testId)==0) {
-			teacherMapper.activeTest(testId);
-		}else {
-			teacherMapper.deactiveTest(testId);
+		if(teacherMapper.countQuestionByTest(testId)!=0) {
+			if(100%teacherMapper.countQuestionByTest(testId)==0&&teacherMapper.countQuestionByTest(testId)>4) {
+				teacherMapper.activeTest(testId);
+			}else {
+				teacherMapper.deactiveTest(testId);
+			}
 		}
 		return row;
 	}
@@ -166,4 +177,18 @@ public class TeacherService {
 		
 		return count;
 	}
+	
+	public Integer updateTea(String newPw, String teacherPw, String teacherId ) {
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("newPw", newPw);
+		paramMap.put("teacherPw", teacherPw);
+		paramMap.put("teacherId", teacherId);
+		
+		
+		return teacherMapper.updateTea(paramMap);
+	}
+	
+	
 }

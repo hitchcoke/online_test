@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.online.mapper.StudentMapper;
+import goodee.gdj58.online.mapper.TeacherMapper;
 import goodee.gdj58.online.vo.Student;
 
 @Service
@@ -16,6 +17,7 @@ import goodee.gdj58.online.vo.Student;
 public class StudentService {
 	@Autowired 
 	private StudentMapper studentMapper;
+	private TeacherMapper teacherMapper;
 	
 	public List<Student> getStudentList(int currentPage, int rowPerPage, String searchWord){
 		int beginRow= (currentPage-1)*rowPerPage;
@@ -49,4 +51,5 @@ public class StudentService {
 		
 		return studentMapper.loginStudent(student);
 	}
+	
 }

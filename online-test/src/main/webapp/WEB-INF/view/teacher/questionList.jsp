@@ -34,7 +34,7 @@
 		<form action="${pageContext.request.contextPath}/teacher/addQuestion" method="post">
 			<tr>
 				<td><input type="hidden" name="testId" value="${t.testId}">
-					<input type="number" name="questionIdx"></td>
+					<input type="number" name="questionIdx" value="${idx}" readonly="readonly"></td>
 				<td colspan="3"><input type="text" name="questionTitle"><button type="submit">추가</button></td>
 			</tr>		
 		</form>
