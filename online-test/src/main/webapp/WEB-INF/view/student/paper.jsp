@@ -14,7 +14,7 @@
 				<tr>
 					<td>${q.questionIdx} . ${q.questionTitle} </td>
 				</tr>
-				<c:set var="test" value="${q.questionNo+=''+=q.questionTitle }"/>
+				<c:set var="test" value="${q.questionNo + q.questionTitle }"/>
 				<c:forEach var="e" items="${test}">
 					<tr>
 						<td>${e.exampleIdx}. ${e.exampleTitle}</td>
