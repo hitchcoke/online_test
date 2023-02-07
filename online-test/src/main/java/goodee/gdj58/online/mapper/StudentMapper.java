@@ -1,6 +1,5 @@
 package goodee.gdj58.online.mapper;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,11 +21,17 @@ public interface StudentMapper {
 	//
 	Student loginStudent(Student s);
 	Integer updateStu(Map<String, Object> paramMap);
+	List<Score> myScoreByStudentNo(int studentNo);
 	
-	Integer insertPaper(Paper p);
+	
+	//시험지관련메서드
+	Integer selectForScore(Paper p);
+	Integer addPaper(Paper p);
 	Integer updatePaper(Paper p);
-	
 	Integer insertScore(Score s);
-	 
+	List<Paper> selectForPaper(int testId);
+	List<Paper> paperCkAnswer(Paper p);
+	Integer paperCkCount(Paper p);
+	Integer scoreCk(Paper p);
 		
 }

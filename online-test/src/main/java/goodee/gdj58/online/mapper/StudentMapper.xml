@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.StudentMapper">
 	<select id="selectStudentList" resultType="goodee.gdj58.online.vo.Student" parameterType="map">
-		SELECT student_no studentNo, student_id studentId, student_name studentName 
+		SELECT student_no studentNo, student_id studentId, student_name studentName, grade 
 		FROM student 
 		<where>
 			<if test="searchWord != '' ">
@@ -12,14 +12,14 @@
 		ORDER BY studentNo DESC LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<insert id="addStudent" parameterType="goodee.gdj58.online.vo.Student" >
-		INSERT INTO student(student_id, student_name, student_pw)VALUES(#{studentId}, #{studentName}, PASSWORD(#{studentPw}))
+		INSERT INTO student(student_id, student_name, student_pw, grade)VALUES(#{studentId}, #{studentName}, PASSWORD(#{studentPw}), #{grade})
 	</insert>
 	<delete id="deleteStudent" parameterType="int">
 		DELETE FROM student WHERE student_no=#{studentNo};
 	</delete>
 	
 	<select id="loginStudent" parameterType="goodee.gdj58.online.vo.Student" resultType= "goodee.gdj58.online.vo.Student">
-		SELECT student_id studentId, student_name studentName, student_no studentNo WHERE student_id=#{studentId} AND student_pw=PASSWORD(#{studentPw})
+		SELECT student_id studentId, student_name studentName, student_no studentNo, grade FROM student WHERE student_id=#{studentId} AND student_pw=PASSWORD(#{studentPw})
 	</select>
 		<select id="countStu" resultType="int" parameterType="java.lang.String">
 		SELECT
@@ -30,6 +30,60 @@
 				student_name LIKE CONCAT('%',#{searchWord},'%')
 			</if>
 		</where>	
+	</select>
+	
+	<select id="selectForPaper" parameterType="int" resultType="goodee.gdj58.online.vo.Paper">
+	
+		SELECT q.question_no questionNo, q.question_idx questionIdx, q.question_title questionTitle, e.example_no exampleNo, e.example_idx exampleIdx, e.example_ox exampleOx, e.example_title exampleTitle, q.test_id testId from question q INNER JOIN example e ON e.question_no = q.question_no where q.test_id =#{testId};
+	
+	</select>
+	
+	<insert id="addPaper" parameterType="goodee.gdj58.online.vo.Paper">
+	
+		INSERT INTO paper(student_no, question_no, answer, test_id)values(#{studentNo}, #{questionNo}, #{answer}, #{testId});
+		
+	</insert>
+	
+	<update id="updatePaper" parameterType="goodee.gdj58.online.vo.Paper">
+	
+		UPDATE paper SET answer=#{answer} WHERE question_no=#{questionNo} AND student_no=#{studentNo}
+	
+	</update>
+	
+	<insert id="insertScore" parameterType="goodee.gdj58.online.vo.Score">
+	
+		INSERT INTO score(student_no, test_id, score)VALUES(#{studentNo}, #{testId}, #{score})
+	
+	</insert>
+	
+	<select id="selectForScore" parameterType="goodee.gdj58.online.vo.Paper" resultType="int">
+	
+		SELECT count(*) FROM paper p inner join question q on p.question_no= q.question_no inner join example e on e.question_no = q.question_no where e.example_idx= p.answer and p.test_id=#{testId} and p.student_no=#{studentNo} and e.example_ox='정답'
+	
+	</select>
+	
+	<select id="myScoreByStudentNo" parameterType="int" resultType="goodee.gdj58.online.vo.Score">
+	
+		SELECT t.test_title testTitle, s.score score, t.test_date testDate FROM test t inner join score s on t.test_id = s.test_id WHERE s.student_no=#{studentNo}
+		
+	</select>
+	
+	<select id="paperCkAnswer" parameterType="goodee.gdj58.online.vo.Paper" resultType="goodee.gdj58.online.vo.Paper">
+	
+		SELECT question_no questionNo, answer FROM paper WHERE test_id=#{testId} AND student_no=#{studentNo}
+		
+	</select>
+	
+	<select id="paperCkCount" parameterType="goodee.gdj58.online.vo.Paper" resultType="int">
+	
+		SELECT count(*) FROM paper WHERE test_id=#{testId} AND student_no=#{studentNo}
+		
+	</select>
+	
+	<select id="scoreCk" parameterType="goodee.gdj58.online.vo.Paper" resultType="int">
+	
+		SELECT count(*) FROM score WHERE test_id=#{testId} AND student_no=#{studentNo}
+	
 	</select>
 	
 </mapper>

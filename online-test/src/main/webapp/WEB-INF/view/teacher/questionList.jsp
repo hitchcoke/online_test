@@ -27,7 +27,7 @@
 				<td>${q.questionIdx}</td>
 				<td>${q.questionTitle}</td>
 				<td>${score}</td>
-				<td><a href="${pageContext.request.contextPath}/teacher/exampleList?questionNo=${q.questionNo}">관리</a></td>
+				<td><a href="${pageContext.request.contextPath}/teacher/exampleList?questionNo=${q.questionNo}&testId=${testId}">관리</a></td>
 				<td><a href="${pageContext.request.contextPath}/teacher/deleteQuestion?questionNo=${q.questionNo}&testId=${t.testId}">삭제</a></td>
 			</tr>
 		</c:forEach>

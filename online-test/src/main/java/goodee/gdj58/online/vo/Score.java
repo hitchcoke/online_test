@@ -7,4 +7,6 @@ public class Score {
 	private int studentNo;
 	private int testId;
 	private int score;
+	private String testTitle;
+	private String testDate;
 }

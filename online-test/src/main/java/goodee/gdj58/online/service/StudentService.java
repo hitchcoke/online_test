@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.online.mapper.StudentMapper;
 import goodee.gdj58.online.mapper.TeacherMapper;
+import goodee.gdj58.online.vo.Paper;
+import goodee.gdj58.online.vo.Score;
 import goodee.gdj58.online.vo.Student;
 
 @Service
@@ -17,6 +19,7 @@ import goodee.gdj58.online.vo.Student;
 public class StudentService {
 	@Autowired 
 	private StudentMapper studentMapper;
+	@Autowired
 	private TeacherMapper teacherMapper;
 	
 	public List<Student> getStudentList(int currentPage, int rowPerPage, String searchWord){
@@ -51,5 +54,67 @@ public class StudentService {
 		
 		return studentMapper.loginStudent(student);
 	}
+	public List<Paper> selectForPaper(int testId){
+		
+		
+		return studentMapper.selectForPaper(testId);
+	}
 	
+	public Integer addPaper(Paper p) {
+		
+		try{studentMapper.addPaper(p);
+		
+			
+		}catch(Exception e) {
+			studentMapper.updatePaper(p);
+		}
+		
+		return 1;
+	}
+	
+	public Integer insertScore(Paper p) {
+		//test의 총 문제 갯수
+		int countQuestion = teacherMapper.countQuestionByTest(p.getTestId());
+		//test에서 맞은 갯수
+		int countAnswer= studentMapper.selectForScore(p);
+		
+		
+		//100/문제갯수* 맞은 문제 내 점수
+		int score=100/countQuestion*countAnswer;
+		
+		Score s= new Score();
+		
+		s.setScore(score);
+		s.setStudentNo(p.getStudentNo());
+		s.setTestId(p.getTestId());
+		
+		return studentMapper.insertScore(s);
+		
+		
+		
+	}
+	public List<Score> myScoreByStudentNo(int studentNo){
+		
+		
+		return studentMapper.myScoreByStudentNo(studentNo);
+	}
+	
+	public Integer CkPaper(Paper p) {
+	
+		int countQuestion = teacherMapper.countQuestionByTest(p.getTestId());
+		int countAnswer= studentMapper.paperCkCount(p);
+		if(countAnswer==countQuestion) {
+			return 1;
+		}
+			return 0;
+		
+		
+	}
+	
+	public List<Paper> paperCkAnswer(Paper p){
+		return studentMapper.paperCkAnswer(p);
+	}
+	public Integer scoreCk(Paper p) {
+		return studentMapper.scoreCk(p);
+	}
 }

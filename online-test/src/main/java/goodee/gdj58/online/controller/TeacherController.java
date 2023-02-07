@@ -145,6 +145,7 @@ public class TeacherController {
 		for(Question q : list) {
 			idx++;
 		}
+		model.addAttribute("testId", testId);
 		model.addAttribute("idx", idx);
 		model.addAttribute("score", score);
 		model.addAttribute("t", t);
@@ -154,7 +155,8 @@ public class TeacherController {
 	}
 	
 	@GetMapping("/teacher/exampleList")
-	public String exampleList(Model model, @RequestParam(value="questionNo") int questionNo) {
+	public String exampleList(Model model, @RequestParam(value="questionNo") int questionNo,
+			@RequestParam(value="testId") int testId) {
 		
 		List<Example> list= teacherService.selectTestExample(questionNo);
 		model.addAttribute("list", list);
@@ -165,6 +167,7 @@ public class TeacherController {
 			idx++;
 		}
 		model.addAttribute("idx", idx);
+		model.addAttribute("testId", testId);
 		
 		
 		return "teacher/exampleList";

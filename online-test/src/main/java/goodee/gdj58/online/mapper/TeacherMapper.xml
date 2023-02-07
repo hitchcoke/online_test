@@ -3,7 +3,7 @@
 <mapper namespace="goodee.gdj58.online.mapper.TeacherMapper">
 
 	<select id="selectTeacherList" resultType="goodee.gdj58.online.vo.Teacher" parameterType="map">
-		SELECT teacher_no teacherNo, teacher_id teacherId, teacher_name teacherName 
+		SELECT teacher_no teacherNo, teacher_id teacherId, teacher_name teacherName, grade 
 		FROM teacher
 		<where>
 			<if test="searchWord != '' ">

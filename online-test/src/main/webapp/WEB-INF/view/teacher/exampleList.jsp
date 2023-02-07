@@ -95,6 +95,7 @@
   </div>
 </div>
 
-</c:forEach>	
+</c:forEach>
+<div><a href="${pageContext.request.contextPath}/teacher/questionList?testId=${testId}">문제로가기</a></div>	
 </body>
 </html>

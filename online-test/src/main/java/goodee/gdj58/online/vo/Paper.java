@@ -12,5 +12,12 @@ public class Paper {
 	private int paperNo;
 	private int studentNo;
 	private int answer;
+	private int exampleNo;
+	
+	private int questionIdx;
+	private String questionTitle;
 
+	private int exampleIdx;
+	private String exampleOx;
+	private String exampleTitle;
 }
