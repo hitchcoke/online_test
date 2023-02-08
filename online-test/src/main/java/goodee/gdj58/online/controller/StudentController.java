@@ -87,7 +87,8 @@ public class StudentController {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@GetMapping("student/paper")
-	public String paper(HttpSession session, @RequestParam(value="testId" ) int testId, Model model) {
+	public String paper(HttpSession session, @RequestParam(value="testId" ) int testId, Model model,
+			 @RequestParam(value="row" ,defaultValue="0") int row) {
 		Student loginStu = (Student)session.getAttribute("loginStu");
 		Paper p = new Paper();
 		p.setStudentNo(loginStu.getStudentNo());
@@ -95,9 +96,11 @@ public class StudentController {
 		if(studentService.scoreCk(p)==1) {
 			return "redirect:/student/home?row=1";
 		}
-		
+		Test t= teacherService.testOne(testId);
+		model.addAttribute("t", t);
 		List<Paper> list = studentService.selectForPaper(testId);
 		List<Paper> answer= studentService.paperCkAnswer(p);
+		model.addAttribute("row", row);
 		
 		model.addAttribute("answer", answer);
 		model.addAttribute("list", list);
@@ -130,9 +133,9 @@ public class StudentController {
 		p.setStudentNo(loginStu.getStudentNo());
 		if(studentService.CkPaper(p)==1) {
 			studentService.insertScore(p);
-			return "redirect:/student/home";
+			return "redirect:/student/answerPaper?testId="+p.getTestId();
 		}else {
-			return "redirect:/student/paper?testId="+p.getTestId();
+			return "redirect:/student/paper?testId="+p.getTestId()+"&row=1";
 		}
 	}
 	
@@ -217,6 +220,26 @@ public class StudentController {
 		return "student/home";
 		}
 	
+	@GetMapping("student/answerPaper")
+	public String answerPaper(HttpSession session, @RequestParam(value="testId" ) int testId, Model model,
+			 @RequestParam(value="row" ,defaultValue="0") int row) {
+		Student loginStu = (Student)session.getAttribute("loginStu");
+		Paper p = new Paper();
+		p.setStudentNo(loginStu.getStudentNo());
+		p.setTestId(testId);
+		Test t= teacherService.testOne(testId);
+		model.addAttribute("t", t);
+		List<Paper> list = studentService.selectForPaper(testId);
+		List<Paper> answer= studentService.paperCkAnswer(p);
+		model.addAttribute("row", row);
+		
+		model.addAttribute("answer", answer);
+		model.addAttribute("list", list);
+		
+		
+		
+		return "student/answerPaper";
+	}
 	
 	
 }

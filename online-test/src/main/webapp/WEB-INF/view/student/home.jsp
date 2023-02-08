@@ -6,18 +6,54 @@
 
 <html lang="ko">
 <head>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-	<title>캘린더</title>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-
-
-	<script type="text/javaScript" language="javascript">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
 
-	
-	</script>
+  <title>testList</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="${pageContext.request.contextPath}/bootstrap/assets/img/favicon.png" rel="icon">
+  <link href="${pageContext.request.contextPath}/bootstrap/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="${pageContext.request.contextPath}/bootstrap/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/bootstrap/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/bootstrap/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/bootstrap/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/bootstrap/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="${pageContext.request.contextPath}/bootstrap/assets/css/main.css" rel="stylesheet">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/loginCss/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/loginCss/css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/loginCss/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- Style -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/loginCss/css/style.css">
+     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/css/bootstrap.min.css">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/css/style.css">
 	<style TYPE="text/css">
 		body {
 		scrollbar-face-color: #F6F6F6;
@@ -40,10 +76,10 @@
 		text-overflow:ellipsis;
 		}
 
-		A:link { font-size:9pt; font-family:"돋움";color:#000000; text-decoration:none; }
-		A:visited { font-size:9pt; font-family:"돋움";color:#000000; text-decoration:none; }
-		A:active { font-size:9pt; font-family:"돋움";color:red; text-decoration:none; }
-		A:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
+		A:link {color:#000000; }
+		A:visited {color:#000000;  }
+		A:active { color:red; }
+		A:hover { color:red;}
 		.day{
 			width:100px; 
 			height:30px;
@@ -233,7 +269,7 @@
 							<c:if test="${t.testDate eq monthdate}">
 							
 							<br><c:if test="${t.active eq 1}">
-									&nbsp;&nbsp;&nbsp;<a style="font-size: 2.0em;"href="${pageContext.request.contextPath}/student/paper?testId=${t.testId}">${t.testTitle}</a>
+									&nbsp;&nbsp;&nbsp;<a style="font-size: 2.0em;"href="${pageContext.request.contextPath}/student/paper?testId=${t.testId}&testTitle=${t.testTitle}">${t.testTitle}</a>
 								</c:if>	
 							</c:if>
 						</c:forEach>
@@ -254,7 +290,7 @@
 							<c:if test="${t.testDate eq monthdate}">
 							
 							<br><c:if test="${t.active eq 1}">
-									&nbsp;&nbsp;&nbsp;<a style="font-size: 2.0em;"href="${pageContext.request.contextPath}/student/paper?testId=${t.testId}">${t.testTitle}</a>
+									&nbsp;&nbsp;&nbsp;<a style="font-size: 2.0em;"href="${pageContext.request.contextPath}/student/paper?testId=${t.testId}&testTitle=${t.testTitle}">${t.testTitle}</a>
 								</c:if>	
 							</c:if>
 						</c:forEach>
@@ -277,7 +313,7 @@
 				<c:if test="${t.testDate eq monthdate}">
 				
 				<br><c:if test="${t.active eq 1}">
-									&nbsp;&nbsp;&nbsp;<a style="font-size: 2.0em;"href="${pageContext.request.contextPath}/student/paper?testId=${t.testId}">${t.testTitle}</a>
+									&nbsp;&nbsp;&nbsp;<a style="font-size: 2.0em;"href="${pageContext.request.contextPath}/student/paper?testId=${t.testId}&testTitle=${t.testTitle}">${t.testTitle}</a>
 								</c:if>	
 				</c:if>
 			</c:forEach>
@@ -298,7 +334,7 @@
 				<c:if test="${t.testDate eq monthdate}">
 				
 				<br><c:if test="${t.active eq 1}">
-									&nbsp;&nbsp;&nbsp;<a style="font-size: 2.0em;"href="${pageContext.request.contextPath}/student/paper?testId=${t.testId}">${t.testTitle}</a>
+									&nbsp;&nbsp;&nbsp;<a style="font-size: 2.0em;"href="${pageContext.request.contextPath}/student/paper?testId=${t.testId}&testTitle=${t.testTitle}">${t.testTitle}</a>
 								</c:if>	
 				</c:if>
 			</c:forEach>

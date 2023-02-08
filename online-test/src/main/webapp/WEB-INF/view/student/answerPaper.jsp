@@ -1,6 +1,6 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,83 +55,82 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/css/style.css">
 </head>
 <body>
-	<div>
-		<c:import url="/WEB-INF/view/teacher/inc/teacherMenu.jsp">
+<div>
+		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp">
 		</c:import>
-	</div>
-	<br><br><br>
-	<div class="container">
-		<div class="section-header">
-	           <h2>${t.testTitle} ${t.testDate }<span style="float:right"><button type="button" class="btn btn-outline-success btn" data-bs-toggle="modal" data-bs-target="#exampleModal">수정</button></span></h2>
-	    </div>
-			
-		<table style="width:100%">
-			<tr>
-				<td width="10%">문제번호</td>
-				<td width="40%">문제</td>
-				<td>배점</td>
-				<td width="8%">관리</td>
-				<td width="8%">삭제</td>
-			</tr>
-			<tr>
-				<td colspan="6"><hr style="height: 3px; background-color:black;"></td>
-			</tr>
-			
-			<c:forEach var="q" items="${list}">
-				<tr>
-					<td>${q.questionIdx}</td>
-					<td>${q.questionTitle}</td>
-					<td>${score}</td>
-					<td><button type="button" class="btn btn-outline-success btn" onclick="location.href='${pageContext.request.contextPath}/teacher/exampleList?questionNo=${q.questionNo}&testId=${testId}'">관리</button></td>
-					<td><button type="button" class="btn btn-outline-success btn" onclick="location.href='${pageContext.request.contextPath}/teacher/deleteQuestion?questionNo=${q.questionNo}&testId=${t.testId}'">삭제</button></td>
-				</tr>
-				<tr>
-					<td colspan="6"><hr></td>
-				</tr>
-			
-			</c:forEach>
-			<tr>
-				<td colspan="6"><hr style="height: 3px; background-color:black;"></td>
-			</tr>
-			
-			<form action="${pageContext.request.contextPath}/teacher/addQuestion" method="post">
-				<tr>
-					<td><input type="hidden" name="testId" value="${t.testId}">
-					<input type="number" name="questionIdx" value="${idx}" readonly="readonly"></td>
-					<td><input type="text" name="questionTitle"></td>
-					<td colspan="2"><button type="submit" class="btn btn-outline-success btn">추가</button></td>
-				</tr>
-			</form>
-		</table>
-	</div>
-	<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">test update</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form action="${pageContext.request.contextPath}/teacher/updateTest" method="post">
-	      <div class="modal-body">
-	       	 <div>testTitle: <input type="text" name="testTitle"> </div>
-	       	 <input type="hidden" name="testId" value="${t.testId}">
-	       	 <div>testDate: <input type="date" name="testDate"></div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="submit" class="btn btn-primary">update</button>
-	      </div>
-      </form>
-    </div>
-  </div>
 </div>
-<script>
-	if(${row}==1){
+	<div class="container">
+	<br><br><br>
+		<div class="section-header">
+	          <h2>제 ${t.testId}회 ${t.testTitle} 정답지</h2>
+	    </div>
+	    <div style="float:right"><h4>${loginStu.studentName}님</h4></div>
+	    <br><br>
+		<c:set var="idx" value=""/>
+		<div class="row">
+			<div class="col-md-6">
+			<c:forEach var="q" items="${list}">
+				<table>
+				
+				
+				<c:set var="curdate" value="${q.questionIdx}"/>
+				<c:if test="${curdate != idx}">
+					<tr>
+						<td><hr></td>
+					</tr>
+					
+					<c:set var="idx" target="idx" value="${q.questionIdx}"/>
+					<tr>
+						
+							<td>${q.questionIdx} . ${q.questionTitle} 
+							
+					
+							<br>
+							<span>제출 답: 
+								<c:forEach var="a" items="${answer}">
+									<c:if test="${a.questionNo eq q.questionNo}">${a.answer}</c:if>
+								</c:forEach>
+							</span>
+							
+							</td>
+						
+					</tr>
+					<tr>
+						<td><hr></td>
+					</tr>
+					
+				</c:if>
+						<tr>
+							<td>
+								<span> 
+								<c:if test="${q.exampleOx=='정답'}"><span style="color:red">⭕</span></c:if>
+								<c:forEach var="a" items="${answer}">
+									<c:if test="${a.questionNo eq q.questionNo}">
+										<c:if test="${a.answer==q.exampleIdx}">
+											✔
+										</c:if>
+									</c:if>
+								</c:forEach>
+								</span>
+							${q.exampleIdx }. ${q.exampleTitle} 
 		
-		alert("삭제가 불가한 문제입니다")
-	}
-
-</script>
+							<c:if test="${q.exampleOx=='정답'}"><span style="color:red">${q.exampleOx}</span></c:if></td>
+						</tr>
+				
+				</table>
+					<c:if test="${q.questionIdx%5==0&&q.exampleIdx==5}"> 
+						</div>
+						<c:if test="${q.questionIdx==10&&q.exampleIdx==5}">
+							<br><br><hr style="height: 3px; background-color:black;"><br><br>
+						</c:if>	
+						<div class="col-md-6">
+					</c:if>
+				</c:forEach>
+				</div>
+		
+			<div><br><br></div>
+			
+		
+	
 </body>
 </html>

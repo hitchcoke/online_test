@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -9,9 +8,9 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-  <title>EmpList</title>
+
+  <title>testList</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -33,76 +32,63 @@
 
   <!-- Template Main CSS File -->
   <link href="${pageContext.request.contextPath}/bootstrap/assets/css/main.css" rel="stylesheet">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/loginCss/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/loginCss/css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/loginCss/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- Style -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/loginCss/css/style.css">
+     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/css/bootstrap.min.css">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/css/style.css">
 </head>
 <body>
-
-	<!--empMenuInclude -->
 	<div>
 		<c:import url="/WEB-INF/view/teacher/inc/teacherMenu.jsp">
 		</c:import>
 	</div>
 	<br><br><br>
-
-	<div class="section-header">
-          <h2>${loginTea.teacherId} 님의 정보수정</h2>
-        </div>
-	<div class="content">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <img src="${pageContext.request.contextPath}/image/logins.png" alt="Image" class="img-fluid">
-        </div>
-        <div class="col-md-6 contents">
-          <div class="row justify-content-center">
-            <div class="col-md-8">
-              <div class="mb-4">
-  
-            </div>
-
-	            <form action="${pageContext.request.contextPath}/teacher/updateTea" method="post" id="form">
-	              <div class="form-group first">
-	                <label for="username">현재비밀번호</label>
-	                <input type="password" class="form-control" id="id" name="oldPw">
-	              </div>
-	             
-	              <div class="form-group last mb-4">
-	                <label for="password">새로운 비밀번호</label>
-	                <input type="password" class="form-control" id="pw" name="newPw">
-	                 <span style="color:red"id = "msgs" class="msgs"></span>
-	              </div>
-	              <div class="form-group first">
-	                <label for="username">비밀번호 확인</label>
-	                <input type="password" class="form-control" id="ck" name="newPwCk" >
-	              </div>
-	             <br>
-	              <button type="button" id="btn" class="btn btn-block btn-success btn-lg">변경</button>
-	            </form>
-	            </div>
-	          </div>
-	       </div>
-	     </div>
-	     </div>       
-	
-		
+	<div class="container">
+		<div class="section-header">
+	          <h2>학생 ${studentName}의 성적</h2>
+	    </div>
+			
+		<table style="width:100%">
+			<tr>
+				<th>시험 이름</th>
+				<th>성적</th>
+				<th>시험 날짜</th>
+			</tr>
+			<tr>
+				<td colspan="4"><hr style="height: 3px; background-color:black;"></td>
+			</tr>
+			
+			<c:forEach var="s" items="${list}">
+				<tr>
+					<td>${s.testTitle}</td>
+					<td>${s.score}점</td>
+					<td>${s.testDate }</td>
+				</tr>
+				<tr>
+					<td colspan="4"><hr></td>
+				</tr>
+			
+			</c:forEach>
+			<tr>
+				<td colspan="4"><hr style="height: 3px; background-color:black;"></td>
+			</tr>
+		</table>
 	</div>
-<script>
-	$("#btn").click(function(){
-		if($("#pw").val().length<4){
-			alert('비밀번호확인해주세요');
-			return;
-		}
-		
-		
-		if($("#pw").val()!=$('#ck').val()){
-			alert('비밀번호확인해주세요');
-			return;
-		}	
-		
-		$('#form').submit()
-	})
-	if(${row}==1){
-		alert('비밀번호확인해주세요')
-	}
-</script>
 </body>
 </html>

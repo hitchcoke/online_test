@@ -75,7 +75,7 @@
 	                <input type="password" class="form-control" id="ck" name="newPwCk" >
 	              </div>
 	             <br>
-	              <button type="button" id="btn" class="btn btn-block btn-success btn-lg">add</button>
+	              <button type="button" id="btn" class="btn btn-block btn-success btn-lg">변경</button>
 	            </form>
 	            </div>
 	          </div>

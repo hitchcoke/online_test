@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.IdService;
+import goodee.gdj58.online.service.StudentService;
 import goodee.gdj58.online.service.TeacherService;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
+import goodee.gdj58.online.vo.Score;
+import goodee.gdj58.online.vo.Student;
 import goodee.gdj58.online.vo.Teacher;
 import goodee.gdj58.online.vo.Test;
 
@@ -24,7 +27,8 @@ public class TeacherController {
 	TeacherService teacherService;
 	@Autowired
 	IdService idService;
-	
+	@Autowired
+	StudentService studentService;
 	
 	@GetMapping("/employee/teacherList")
 	public String teacherList(HttpSession session,
@@ -131,12 +135,13 @@ public class TeacherController {
 	}
 	
 	@GetMapping("/teacher/questionList")
-	public String questionList(Model model, @RequestParam(value="testId") int testId) {
+	public String questionList(Model model, @RequestParam(value="testId") int testId,
+			@RequestParam(value="row", defaultValue="0") int row) {
 		List<Question> list= teacherService.selectTestQuestion(testId);
 		model.addAttribute("list", list);
 		Test t= teacherService.testOne(testId);
 		int count= teacherService.countQuestion(testId);
-
+		model.addAttribute("row", row);
 		int score = 0;
 		if(count!=0) {
 			score=100/count;
@@ -189,10 +194,11 @@ public class TeacherController {
 	
 	@GetMapping("/teacher/deleteExample")
 	public String deleteExample(@RequestParam(value="questionNo") int questionNo
-								,@RequestParam(value="exampleNo") int exampleNo) {
-		teacherService.deleteExample(exampleNo);
+								,@RequestParam(value="exampleNo") int exampleNo,
+								@RequestParam(value="testId") int testId) {
+		int row=teacherService.deleteExample(exampleNo);
 		
-		return "redirect:/teacher/exampleList?questionNo="+questionNo;
+		return "redirect:/teacher/exampleList?questionNo="+questionNo+"&testId="+testId+"&row="+row;
 	}
 	
 	@GetMapping("/teacher/addTest")
@@ -229,11 +235,12 @@ public class TeacherController {
 	
 	@PostMapping("/teacher/addExample")
 	public String addExample(@RequestParam(value="questionNo") int questionNo,
+			@RequestParam(value="testId") int testId,
 			Example e) {
 
 			teacherService.addExample(e);
 		
-		return "redirect:/teacher/exampleList?questionNo="+questionNo;
+		return "redirect:/teacher/exampleList?questionNo="+questionNo+"&testId="+testId;
 	}
 	
 	@PostMapping("/teacher/updateTest")
@@ -243,15 +250,38 @@ public class TeacherController {
 		return "redirect:/teacher/questionList?testId="+t.getTestId();
 	}
 	@PostMapping("/teacher/updateQuestion")
-	public String updateQuestion(Question q) {
+	public String updateQuestion(Question q,@RequestParam(value="testId") int testId) {
 		teacherService.updateQuestion(q);
 		
-		return "redirect:/teacher/exampleList?questionNo="+q.getQuestionNo();
+		return "redirect:/teacher/exampleList?questionNo="+q.getQuestionNo()+"&testId="+testId;
 	}
 	@PostMapping("/teacher/updateExample")
-	public String updateExample(Example e) {
+	public String updateExample(Example e,@RequestParam(value="testId") int testId) {
 		teacherService.updateExample(e);
 
-		return "redirect:/teacher/exampleList?questionNo="+e.getQuestionNo();
+		return "redirect:/teacher/exampleList?questionNo="+e.getQuestionNo()+"&testId="+testId;
 	}
+	
+	
+	@GetMapping("/teacher/scoreList")
+	public String scoreListByGrade(HttpSession session,Model model) {
+		Teacher loginTea = (Teacher)session.getAttribute("loginTea");
+		
+		List<Score> list= teacherService.selectScoreListByGrade(loginTea.getGrade());
+		model.addAttribute("list", list);
+
+		return "teacher/scoreList";
+	}
+	
+	@GetMapping("/teacher/myScoreByTeacher")
+	public String myScore(HttpSession session, Model model, @RequestParam(value="studentNo") int studentNo
+			,@RequestParam(value="studentName") String studentName) {
+		
+		List<Score> list = studentService.myScoreByStudentNo(studentNo);
+		model.addAttribute("list", list);
+		model.addAttribute("studentName", studentName);
+		
+		return "teacher/myScoreByTeacher";
+	}
+	
 }

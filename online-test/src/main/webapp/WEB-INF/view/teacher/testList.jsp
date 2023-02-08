@@ -61,7 +61,7 @@
 	<br><br><br>
 	<div class="container">
 		<div class="section-header">
-	          <h2>EmpList</h2>
+	          <h2>testList</h2>
 	    </div>
 			
 		<table style="width:100%">
@@ -96,13 +96,31 @@
 				<td colspan="6"><hr style="height: 3px; background-color:black;"></td>
 			</tr>
 			
-			<form action="${pageContext.request.contextPath}/teacher/addTest" method="post">
+			<form action="${pageContext.request.contextPath}/teacher/addTest" method="post" id="form">
 				<tr>
-					<td><input type="text" name="testTitle"></td>
-					<td><input type="date" name="testDate"> <button type="submit" class="btn btn-outline-success btn">추가</button></td>
+					<td><input type="text" name="testTitle" id="title"></td>
+					<td><input type="date" name="testDate" id="date"> <button type="button" id="btn" class="btn btn-outline-success btn">추가</button></td>
 				</tr>
 			</form>
 		</table>
 	</div>
+	<script>
+		$('#btn').click(function(){
+			if($('#title').val().length<1){
+				alert('시험 이름을 정해주세요');
+				return;
+			}
+			if($('#date').val().length<1){
+				alert('시험 날짜를 정해주세요');
+				return;
+				
+			}
+			$('#form').submit();
+			
+			
+			
+		})
+		
+	</script>
 </body>
 </html>

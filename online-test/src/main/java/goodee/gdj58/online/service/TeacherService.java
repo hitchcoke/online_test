@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import goodee.gdj58.online.mapper.TeacherMapper;
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
+import goodee.gdj58.online.vo.Score;
 import goodee.gdj58.online.vo.Teacher;
 import goodee.gdj58.online.vo.Test;
 
@@ -135,18 +136,25 @@ public class TeacherService {
 	}
 	
 	public int deleteQuestion(int questionNo, int testId) {
-		int row=teacherMapper.deleteQuestion(questionNo);
-		if(row!=1) {
-			row=teacherMapper.updateQuestionVi(questionNo);
-		}
-		if(teacherMapper.countQuestionByTest(testId)!=0) {
-			if(100%teacherMapper.countQuestionByTest(testId)==0&&teacherMapper.countQuestionByTest(testId)>4) {
-				teacherMapper.activeTest(testId);
-			}else {
-				teacherMapper.deactiveTest(testId);
+		
+		try {
+			int row=teacherMapper.deleteQuestion(questionNo);
+			if(row!=1) {
+				row=teacherMapper.updateQuestionVi(questionNo);
 			}
+			if(teacherMapper.countQuestionByTest(testId)!=0) {
+				if(100%teacherMapper.countQuestionByTest(testId)==0&&teacherMapper.countQuestionByTest(testId)>4) {
+					teacherMapper.activeTest(testId);
+				}else {
+					teacherMapper.deactiveTest(testId);
+				}
+			}
+		}catch(Exception e) {
+			return 0;
+			
 		}
-		return row;
+		
+		return 1;
 	}
 	
 	public Integer deleteExample(int exampleNo) {
@@ -188,6 +196,12 @@ public class TeacherService {
 		
 		
 		return teacherMapper.updateTea(paramMap);
+	}
+	
+	public List<Score> selectScoreListByGrade(int grade){
+		
+		return teacherMapper.selectScoreList(grade);
+		
 	}
 	
 	

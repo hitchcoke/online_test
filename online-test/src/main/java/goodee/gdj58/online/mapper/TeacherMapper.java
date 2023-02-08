@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import goodee.gdj58.online.vo.Example;
 import goodee.gdj58.online.vo.Question;
+import goodee.gdj58.online.vo.Score;
 import goodee.gdj58.online.vo.Teacher;
 import goodee.gdj58.online.vo.Test;
 
@@ -60,4 +61,8 @@ public interface TeacherMapper {
 	Integer countQuestionByTest(int testId);
 	Integer activeTest(int testId);
 	Integer deactiveTest(int testId);
+	
+	//scoreList
+	
+	List<Score> selectScoreList(int grade);
 }

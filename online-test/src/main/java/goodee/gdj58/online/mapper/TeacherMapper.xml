@@ -137,4 +137,10 @@
 		UPDATE test SET active=0 WHERE test_id=#{x}
 	
 	</update>
+	
+	<select id="selectScoreList" parameterType="int" resultType="goodee.gdj58.online.vo.Score">
+	
+		SELECT t.test_title testTitle, s.score score, t.test_date testDate, s1.student_name studentName, s.student_no studentNo FROM test t inner join score s on t.test_id = s.test_id inner join student s1 on s1.student_no = s.student_no WHERE t.grade=#{grade}
+	
+	</select>
 </mapper>
