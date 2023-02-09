@@ -21,9 +21,6 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService employeeService;
 	
-	@Autowired
-	IdService idService;
-	
 	@GetMapping("/employee/modifyEmpPw")
 	public String modifyEmpPw(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
 		
@@ -90,15 +87,12 @@ public class EmployeeController {
 	
 	@PostMapping("/employee/addEmp")
 	public String addEmp(Employee employee) {//employee를 선언 하고 필드명과 input 명을 동일 하게 해주면 setter가 실행돼 들어간다
-		String ckId= idService.getIdCheck(employee.getEmpId());
 		
-		if(ckId==null) {
+		
+		
 			employeeService.insertEmployee(employee);
 			
 			return "redirect:/employee/empList";
-		}else {
-			return "redirect:/employee/addEmp?row=1";
-		}
 		
 		 //sendRedirect , CM-> C
 	}

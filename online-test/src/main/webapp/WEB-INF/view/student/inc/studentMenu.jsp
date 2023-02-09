@@ -12,7 +12,7 @@
         <ul>
           <li><a href="${pageContext.request.contextPath}/student/myScore">성적</a></li>
           <li><a href="${pageContext.request.contextPath}/student/home">시험일정</a></li>
-          <li><a href="${pageContext.request.contextPath}/student/modifyStudentPw">비밀번호 수정</a></li>
+          <li><a href="${pageContext.request.contextPath}/student/updateStu">비밀번호 수정</a></li>
           <li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
       </nav><!-- .navbar -->
 

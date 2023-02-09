@@ -109,7 +109,16 @@
 					
 				</c:if>
 						<tr>
-							<td>${q.exampleIdx }. ${q.exampleTitle}</td>
+							<td>
+								<c:forEach var="a" items="${answer}">
+									<c:if test="${a.questionNo eq q.questionNo}">
+										<c:if test="${a.answer==q.exampleIdx}">
+											✔
+										</c:if>
+									</c:if>
+								</c:forEach>
+								${q.exampleIdx }. ${q.exampleTitle}
+							</td>
 						</tr>
 				
 				</table>

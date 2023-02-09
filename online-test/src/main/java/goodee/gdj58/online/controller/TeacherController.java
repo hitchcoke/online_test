@@ -25,8 +25,7 @@ import goodee.gdj58.online.vo.Test;
 public class TeacherController {
 	@Autowired
 	TeacherService teacherService;
-	@Autowired
-	IdService idService;
+
 	@Autowired
 	StudentService studentService;
 	
@@ -72,13 +71,10 @@ public class TeacherController {
 	
 	@PostMapping("/employee/addTeacher")
 	public String addTeacher(HttpSession session, Teacher t) {
-		String ckid = idService.getIdCheck(t.getTeacherId());
-		if(ckid==null) {
+		
 			teacherService.insertTeacher(t);
 			return "redirect:/employee/teacherList";
-		}else {
-			return "redirect:/employee/addTeacher?row=1";
-		}
+		
 		
 	}
 	

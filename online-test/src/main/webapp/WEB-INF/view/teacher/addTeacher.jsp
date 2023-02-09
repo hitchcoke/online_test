@@ -62,7 +62,9 @@
 	            <form action="${pageContext.request.contextPath}/employee/addTeacher" method="post" id="form">
 	              <div class="form-group first">
 	                <label for="username">아이디 </label>
-	                <input type="text" class="form-control" id="id" name="teacherId">
+	                <input type="text" class="form-control" id="id" >
+	                <input type="text" class="form-control" id="ckid" name="teacherId" readonly="readonly">
+	                <button type="button" id="idck" class="btn btn-block btn-success btn">중복검사</button>
 	              </div>
 	             
 	              <div class="form-group last mb-4">
@@ -95,16 +97,38 @@
 		
 	</div>
 	<script>
-	if(${row}==1){
-		alert('다른아이디를 사용해주세요')
-	}
+	$('#idck').click(function(){
+		if($('#id').val().length>3){
+			$.ajax({
+				url:'${pageContext.request.contextPath}/idCk'
+				, type:'get'
+				, data: {id:$('#id').val()}
+				, success: function(model){
+					if(model=='YES'){
+						$('#ckid').val($('#id').val());
+						
+						alert($('#id').val()+"는 사용가능한 아이디입니다");
+						$('#id').val('');
+					}else{
+						alert($('#id').val()+'는 사용중인 아이디입니다');
+						$('#id').val('');
+					}	
+				}
+				
+			})
+		}else{
+			alert('아이디는 4자이상 입력해주세요')
+		}		
+	})
+	
+	
 	$("#btn").click(function(){
 		if($("#pw").val().length<4){
 			alert('비밀번호는 4자이상 입력해주세요');
 			return;
 		}
 		
-		if($("#id").val().length<4){
+		if($("#ckid").val().length<4){
 			alert('아이디는 4자이상 입력해주세요');
 			return;
 		}

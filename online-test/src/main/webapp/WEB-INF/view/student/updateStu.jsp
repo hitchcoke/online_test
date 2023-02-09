@@ -38,13 +38,13 @@
 
 	<!--empMenuInclude -->
 	<div>
-		<c:import url="/WEB-INF/view/employee/inc/empMenu.jsp">
+		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp">
 		</c:import>
 	</div>
 	<br><br><br>
 
 	<div class="section-header">
-          <h2>addStudent</h2>
+          <h2>${loginStu.studentName} 님의 정보수정</h2>
         </div>
 	<div class="content">
     <div class="container">
@@ -59,34 +59,23 @@
   
             </div>
 
-	            <form action="${pageContext.request.contextPath}/employee/addStudent" method="post" id="form">
+	            <form action="${pageContext.request.contextPath}/student/updateStu" method="post" id="form">
 	              <div class="form-group first">
-	                <label for="username">아이디 </label>
-	                <input type="text" class="form-control" id="id" >
-	                <input type="text" class="form-control" id="ckid" name="studentId" readonly="readonly">
-	                <button type="button" id="idck" class="btn btn-block btn-success btn">중복검사</button>
+	                <label for="username">현재비밀번호</label>
+	                <input type="password" class="form-control" id="id" name="oldPw">
 	              </div>
 	             
 	              <div class="form-group last mb-4">
-	                <label for="password">비밀번호 </label>
-	                <input type="password" class="form-control" id="pw" name="studentPw">
+	                <label for="password">새로운 비밀번호</label>
+	                <input type="password" class="form-control" id="pw" name="newPw">
 	                 <span style="color:red"id = "msgs" class="msgs"></span>
 	              </div>
 	              <div class="form-group first">
-	                <label for="username">이름 </label>
-	                <input type="text" class="form-control" id="name" name="studentName" >
+	                <label for="username">비밀번호 확인</label>
+	                <input type="password" class="form-control" id="ck" name="newPwCk" >
 	              </div>
 	             <br>
-	              <br>
-	              <div>
-	              	<select class="form-select" aria-label="Default select example"name="grade">
-					  <option selected value="1">학년선택</option>
-					  <option value="1">1학년</option>
-					  <option value="2">2학년</option>
-					  <option value="3">3학년</option>
-					</select>
-	              </div>
-	              <button type="button" id="btn" class="btn btn-block btn-success btn-lg">add</button>
+	              <button type="button" id="btn" class="btn btn-block btn-success btn-lg">변경</button>
 	            </form>
 	            </div>
 	          </div>
@@ -96,50 +85,24 @@
 	
 		
 	</div>
-	<script>
-	$('#idck').click(function(){
-		if($('#id').val().length>3){
-			$.ajax({
-				url:'${pageContext.request.contextPath}/idCk'
-				, type:'get'
-				, data: {id:$('#id').val()}
-				, success: function(model){
-					if(model=='YES'){
-						$('#ckid').val($('#id').val());
-						
-						alert($('#id').val()+"는 사용가능한 아이디입니다");
-						$('#id').val('');
-					}else{
-						alert($('#id').val()+'는 사용중인 아이디입니다');
-						$('#id').val('');
-					}	
-				}
-				
-			})
-		}else{
-			alert('아이디는 4자이상 입력해주세요')
-		}		
-	})
-	
+<script>
 	$("#btn").click(function(){
 		if($("#pw").val().length<4){
-			alert('비밀번호는 4자이상 입력해주세요');
+			alert('비밀번호확인해주세요');
 			return;
 		}
 		
-		if($("#ckid").val().length<4){
-			alert('아이디는 4자이상 입력해주세요');
-			return;
-		}
 		
-		if($("#name").val().length<2){
-			alert('이름은 2자이상 입력해주세요');
+		if($("#pw").val()!=$('#ck').val()){
+			alert('비밀번호확인해주세요');
 			return;
-		}
-		
+		}	
 		
 		$('#form').submit()
 	})
-	</script>
+	if(${row}==1){
+		alert('비밀번호확인해주세요')
+	}
+</script>
 </body>
 </html>

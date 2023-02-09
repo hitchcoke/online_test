@@ -32,8 +32,7 @@ public class StudentController {
 	
 	@Autowired
 	TeacherService teacherService;
-	@Autowired
-	IdService idService;
+	
 	@GetMapping("/employee/studentList")
 	public String StudentList(HttpSession session,
 			@RequestParam(value="currentPage", defaultValue= "1") int currentPage
@@ -75,13 +74,9 @@ public class StudentController {
 	
 	@PostMapping("/employee/addStudent")
 	public String addStudent(HttpSession session, Student t) {
-		String ckid = idService.getIdCheck(t.getStudentId());
-		if(ckid==null) {
+		
 			studentService.insertStudent(t);
 			return "redirect:/employee/studentList";
-		}else {
-			return "redirect:/employee/addStudent?row=1";
-		}
 		
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -240,6 +235,21 @@ public class StudentController {
 		
 		return "student/answerPaper";
 	}
-	
+	@GetMapping("student/updateStu")
+	public String updateStu(HttpSession session, @RequestParam(value="row", defaultValue="0") int row, Model model) {
+		model.addAttribute("row", row);
+		
+		return "student/updateStu";
+	}
+	@PostMapping("student/updateStu")
+	public String updateStu(HttpSession session, @RequestParam(value="oldPw") String oldPw, @RequestParam(value="newPw") String newPw) {
+		Student stu = (Student)session.getAttribute("loginStu");
+		int row=studentService.updateStu(newPw, oldPw, stu.getStudentId());
+		if(row==0) {
+			return "redirect:/student/updateStu?row=1";
+		}
+		
+		return "redirect:/student/home";
+	}
 	
 }

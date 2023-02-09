@@ -117,4 +117,15 @@ public class StudentService {
 	public Integer scoreCk(Paper p) {
 		return studentMapper.scoreCk(p);
 	}
+	public Integer updateStu(String newPw, String studentPw, String studentId) {
+	Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("newPw", newPw);
+		paramMap.put("studentPw", studentPw);
+		paramMap.put("studentId", studentId);
+		
+		
+		return studentMapper.updateStu(paramMap);
+	
+	}
 }

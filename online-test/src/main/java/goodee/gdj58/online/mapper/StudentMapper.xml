@@ -85,4 +85,10 @@
 		SELECT count(*) FROM score WHERE test_id=#{testId} AND student_no=#{studentNo}
 	
 	</select>
+	
+	<update id="updateStu" parameterType="map">
+		
+		UPDATE student SET student_pw = PASSWORD(#{newPw}) WHERE student_id= #{studentId} AND student_pw = PASSWORD(#{studentPw})
+	
+	</update>
 </mapper>
