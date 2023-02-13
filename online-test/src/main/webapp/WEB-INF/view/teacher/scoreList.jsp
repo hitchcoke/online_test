@@ -64,6 +64,7 @@
 	          <h2>${loginTea.grade}학년 성적</h2>
 	    </div>
 			
+			
 		<table style="width:100%">
 			<tr>
 				<th>학생이름</th>
@@ -92,5 +93,7 @@
 			</tr>
 		</table>
 	</div>
+	
+	
 </body>
 </html>

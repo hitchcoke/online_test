@@ -246,16 +246,16 @@
 	<tr>
 		<c:forEach var="dateList" items="${dateList}" varStatus="date_status"> 
 			<c:if test="${dateList.date>9 && today_info.search_month>9}">
-			<c:set var="monthdate" value="${today_info.search_year+='-'+=today_info.search_month+='-'+=dateList.date}"/>
+				<c:set var="monthdate" value="${today_info.search_year+='-'+=today_info.search_month+='-'+=dateList.date}"/>
 			</c:if>
 			<c:if test="${dateList.date<10 && today_info.search_month>9}">
-			<c:set var="monthdate" value="${today_info.search_year+='-'+=today_info.search_month+='-0'+=dateList.date}"/>
+				<c:set var="monthdate" value="${today_info.search_year+='-'+=today_info.search_month+='-0'+=dateList.date}"/>
 			</c:if>
 			<c:if test="${dateList.date>9 && today_info.search_month<10}">
-			<c:set var="monthdate" value="${today_info.search_year+='-0'+=today_info.search_month+='-'+=dateList.date}"/>
+				<c:set var="monthdate" value="${today_info.search_year+='-0'+=today_info.search_month+='-'+=dateList.date}"/>
 			</c:if>
 			<c:if test="${dateList.date<10 && today_info.search_month<10}">
-			<c:set var="monthdate" value="${today_info.search_year+='-0'+=today_info.search_month+='-0'+=dateList.date}"/>
+				<c:set var="monthdate" value="${today_info.search_year+='-0'+=today_info.search_month+='-0'+=dateList.date}"/>
 			</c:if>
 			<c:choose>
 				<c:when test="${dateList.value=='today'}">

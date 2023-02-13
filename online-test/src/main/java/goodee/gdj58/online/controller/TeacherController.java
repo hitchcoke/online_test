@@ -276,6 +276,7 @@ public class TeacherController {
 		List<Score> list = studentService.myScoreByStudentNo(studentNo);
 		model.addAttribute("list", list);
 		model.addAttribute("studentName", studentName);
+		model.addAttribute("studentNo", studentNo);
 		
 		return "teacher/myScoreByTeacher";
 	}

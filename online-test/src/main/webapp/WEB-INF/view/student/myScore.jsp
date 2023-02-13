@@ -52,6 +52,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/css/bootstrap.min.css">
     
     <!-- Style -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/nav/css/style.css">
 </head>
 <body>
@@ -64,7 +65,13 @@
 		<div class="section-header">
 	          <h2>${loginStu.studentName}님의 성적</h2>
 	    </div>
-			
+		
+	
+		<div>
+			<canvas id="myChart" style="width:100%;max-width:100%"></canvas>
+		</div>
+		
+		<br><br>
 		<table style="width:100%">
 			<tr>
 				<th>시험 이름</th>
@@ -93,5 +100,61 @@
 			</tr>
 		</table>
 	</div>
+	<script>
+		let xModel= [];
+		let yModel= [];
+		
+		$.ajax({
+			async: false
+			,url : '/online-test/chartScore'
+			,type : 'get'
+			,data : {
+					studentNo: ${loginStu.studentNo}
+				}
+			,success : function(model){
+				console.log(model);
+				for(let attr in model){
+					yModel.push(model[attr].score);
+					console.log(model[attr].score);
+					xModel.push(model[attr].testTitle);
+				}
+			}
+		})
+	</script>
+		<script>
+		var xValues = xModel;
+		var yValues = yModel;
+		
+		new Chart("myChart", {
+		  type: "bar",
+		  data: {
+		    labels: xValues,
+		    datasets: [{
+		      
+		      data: yValues
+		    }]
+		  },
+		  options: {
+			  scales: {
+					yAxes: [{
+						ticks: {
+							min: 0,
+							max: 100
+						}
+					}]
+				
+			  }
+		  ,title: {
+		      display: true,
+		      text: "시험 성적"
+		    }
+		  ,legend: {display: false}
+		    
+		   
+		  	}
+		});
+
+	</script>
+
 </body>
 </html>

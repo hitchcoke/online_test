@@ -41,7 +41,7 @@
 	</select>
 	
 	<select id="selectTestbyTeacher" resultType="goodee.gdj58.online.vo.Test" parameterType="int">
-		SELECT test_id testId, test_title testTitle, test_date testDate, active
+		SELECT test_id testId, test_title testTitle, test_date testDate, active, grade
 		FROM test
 		WHERE grade=#{grade} AND vision=1;
 	</select>
